@@ -10,7 +10,7 @@
 
 <br/>
 ${serverTime}
-
+<h6>Kodowanie polskich znaków ćżźźźźźź</h6>
 </body>
 </html>
 
