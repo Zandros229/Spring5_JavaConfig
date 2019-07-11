@@ -1,7 +1,20 @@
 package harman.mvcApp.domain;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="appuser")
 public class AppUser {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    long id;
+
+    @Column(name = "firstName", nullable = false)
     private String firstName;
+
+
     private String lastName;
     private String email;
     private String telephone;
