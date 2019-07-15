@@ -50,4 +50,8 @@ public class AppUser {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+
+    public long getId() {
+        return id;
+    }
 }

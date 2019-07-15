@@ -22,12 +22,11 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class HibernatePersistenceConfiguration {
 
-
-    @Bean
+    @Bean(name = "dataSource")
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5433/Spring5_Intellij?characterEncoding=utf-8"); //
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/Spring5_Intellij?characterEncoding=utf-8");
         dataSource.setUsername("postgres");
         dataSource.setPassword("papaj229");
         return dataSource;
@@ -37,16 +36,17 @@ public class HibernatePersistenceConfiguration {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQKDialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.default_schema", "public");
         return properties;
     }
 
+    // JPA
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(getDataSource());
-        em.setPackagesToScan(new String[]{"harman.mvcApp.domain"});
+        em.setPackagesToScan(new String[] { "harman.mvcApp.domain" });
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -55,16 +55,14 @@ public class HibernatePersistenceConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
-        JpaTransactionManager transactionManager=new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory);
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
         return transactionManager;
-
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslationPostProcessor(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
-
 }
